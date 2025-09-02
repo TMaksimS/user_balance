@@ -8,6 +8,7 @@ from src.settings import X_API_KEY
 
 class CustomExceptions(enum.Enum):
     """Кастомные ошибки"""
+
     BAD_REQUEST = HTTPException(status_code=400, detail="Bad Request")
     PERMISSION_ERROR = HTTPException(status_code=423, detail="Permission Locked")
     NOT_FOUND = HTTPException(status_code=404, detail="Not Found")
@@ -15,6 +16,7 @@ class CustomExceptions(enum.Enum):
         status_code=401,
         detail="Invalid API Key",
     )
+
 
 @LOGER.catch
 async def verify_api_key(x_api_key: str = Header(...)) -> str | CustomExceptions:

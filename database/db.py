@@ -7,11 +7,9 @@ from sqlalchemy.orm import DeclarativeBase
 
 from src.settings import REAL_DATABASE_URL, DB_ECHO
 
-async_engine = create_async_engine(
-    REAL_DATABASE_URL, echo=DB_ECHO
-)
+async_engine = create_async_engine(REAL_DATABASE_URL, echo=DB_ECHO)
 
-sync_engine = create_engine(REAL_DATABASE_URL.replace('asyncpg', 'psycopg2'), echo=True)
+sync_engine = create_engine(REAL_DATABASE_URL.replace("asyncpg", "psycopg2"), echo=True)
 
 async_session_factory = async_sessionmaker(
     async_engine,
@@ -19,8 +17,10 @@ async_session_factory = async_sessionmaker(
     class_=AsyncSession,
 )
 
+
 class Base(DeclarativeBase):
     """Базовый класс декларативного подхода"""
+
     # pylint: disable = too-few-public-methods
     repr_cols_num = 3
     repr_cols = tuple()
@@ -57,7 +57,6 @@ class Base(DeclarativeBase):
             return res
         await session.rollback()
         return None
-
 
     @classmethod
     async def delete(cls, session: AsyncSession, obj_id: uuid.UUID):

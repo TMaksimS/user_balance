@@ -1,0 +1,30 @@
+[flake8]
+# Базовые настройки
+max-line-length = 88
+max-complexity = 18
+ignore =
+    E203,
+    E266,
+    E501,
+    W503,
+    C901,
+
+# Исключаемые директории
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    .poetry,
+    build,
+    dist,
+    migrations,
+    docs,
+    tests/__pycache__,
+
+# Включаемые файлы
+filename = *.py
+
+# Настройки для конкретных ошибок
+per-file-ignores =
+    __init__.py: F401
+    tests/*: E712

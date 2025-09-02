@@ -12,7 +12,7 @@ DB_NAME = env.str("DB_NAME", default="postgres_test")
 DB_HOST = env.str("DB_HOST", default="localhost")
 REAL_DATABASE_URL = env.str(
     "REAL_DATABASE_URL",
-    default=f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:5432/{DB_NAME}"
+    default=f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:5432/{DB_NAME}",
 )
 APP_PORT = env.int("APP_PORT", default=8000)
 APP_HOST = env.str("APP_HOST", default="0.0.0.0")

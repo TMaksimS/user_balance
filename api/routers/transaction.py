@@ -1,4 +1,5 @@
 """transaction endponts"""
+
 import uuid
 
 from fastapi import APIRouter, Depends
@@ -15,9 +16,9 @@ app = APIRouter(prefix="/transaction", tags=["TRANSACTIONS"])
 @LOGER.catch
 @app.post("/", response_model=schemas.Transaction)
 async def create(
-        body: schemas.CreateTransaction,
-        session: AsyncSession = Depends(db.get_db),
-        api_key: str = Depends(verify_api_key)
+    body: schemas.CreateTransaction,
+    session: AsyncSession = Depends(db.get_db),
+    api_key: str = Depends(verify_api_key),
 ):
     if isinstance(api_key, CustomExceptions):
         raise api_key.value
@@ -32,9 +33,9 @@ async def create(
 @LOGER.catch
 @app.get("/{transaction_id}", response_model=schemas.Transaction)
 async def get(
-        transaction_id: uuid.UUID,
-        session: AsyncSession = Depends(db.get_db),
-        api_key: str = Depends(verify_api_key)
+    transaction_id: uuid.UUID,
+    session: AsyncSession = Depends(db.get_db),
+    api_key: str = Depends(verify_api_key),
 ):
     if isinstance(api_key, CustomExceptions):
         raise api_key.value
@@ -48,9 +49,9 @@ async def get(
 @LOGER.catch
 @app.patch("/{transaction_id}/done", response_model=schemas.Transaction)
 async def done_transaction(
-        transaction_id: uuid.UUID,
-        session: AsyncSession = Depends(db.get_db),
-        api_key: str = Depends(verify_api_key)
+    transaction_id: uuid.UUID,
+    session: AsyncSession = Depends(db.get_db),
+    api_key: str = Depends(verify_api_key),
 ):
     if isinstance(api_key, CustomExceptions):
         raise api_key.value
@@ -62,16 +63,19 @@ async def done_transaction(
         return result_dto
     raise CustomExceptions.BAD_REQUEST.value
 
+
 @LOGER.catch
 @app.patch("/{transaction_id}/cancel", response_model=schemas.Transaction)
 async def cancel_transaction(
-        transaction_id: uuid.UUID,
-        session: AsyncSession = Depends(db.get_db),
-        api_key: str = Depends(verify_api_key)
+    transaction_id: uuid.UUID,
+    session: AsyncSession = Depends(db.get_db),
+    api_key: str = Depends(verify_api_key),
 ):
     if isinstance(api_key, CustomExceptions):
         raise api_key.value
-    transaction = await db.Transaction.update(session, transaction_id, **{"status": db.TransactionStatus.CANCELED})
+    transaction = await db.Transaction.update(
+        session, transaction_id, **{"status": db.TransactionStatus.CANCELED}
+    )
     if transaction:
         transaction_dto = schemas.Transaction.model_validate(transaction)
         return transaction_dto
