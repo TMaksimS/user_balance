@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+
+  db:
+    env_file:
+      - .env
+    container_name: "db_test"
+    image: postgres:15.3-alpine3.17
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+      - TZ=Europe/Moscow
+      - PGTZ=Europe/Moscow
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: sh -c "pg_isready -U postgres -h localhost"
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    networks:
+      - custom
+
+  backend:
+    container_name: backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      REAL_DATABASE_URL: postgresql+asyncpg://${DB_USER}:${DB_PASS}@db/${DB_NAME}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "poetry run alembic upgrade head && sleep 2 && poetry run python3 main.py"
+    ports:
+      - "8000:8000"
+    networks:
+      - custom
+
+networks:
+  custom:
+    driver: bridge

@@ -9,7 +9,7 @@ from src.settings import REAL_DATABASE_URL, DB_ECHO
 
 async_engine = create_async_engine(REAL_DATABASE_URL, echo=DB_ECHO)
 
-sync_engine = create_engine(REAL_DATABASE_URL.replace("asyncpg", "psycopg2"), echo=True)
+sync_engine = create_engine(REAL_DATABASE_URL.replace("asyncpg", "psycopg2"), echo=DB_ECHO)
 
 async_session_factory = async_sessionmaker(
     async_engine,

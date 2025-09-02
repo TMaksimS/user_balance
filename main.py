@@ -13,13 +13,13 @@ from src.config import LOGER
 from src.settings import APP_HOST, APP_PORT, APP_RELOAD
 
 
-def upd_meet_status():
+def upd_transaction_status():
     """задача по обновлению данных в БД"""
     db.UoW().upd_transaction_expired()
 
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(upd_meet_status, "cron", minute="*/1")
+scheduler.add_job(upd_transaction_status, "cron", minute="*/1")
 
 
 @asynccontextmanager
